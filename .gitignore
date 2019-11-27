@@ -438,3 +438,4 @@ thumb
 sketch
 
 # End of https://www.gitignore.io/api/node,react,macos,flask,python,pycharm,intellij
+/flask_backend/local_seed.py

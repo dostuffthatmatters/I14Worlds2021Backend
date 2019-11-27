@@ -16,6 +16,11 @@ if os.getenv("SECRET_KEY") is not None:
 else:
     app.config['SECRET_KEY'] = "ThisSecretKeyIsTheOneUsedWhenRunningTheServerLocally"
 
+if os.getenv("BCRYPT_SALT") is not None:
+    BCRYPT_SALT = os.getenv("BCRYPT_SALT")
+else:
+    BCRYPT_SALT = "!327sb??=sb271"
+
 if os.getenv("DATABASE_URL") is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 else:
