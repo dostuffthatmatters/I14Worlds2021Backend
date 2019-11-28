@@ -56,7 +56,7 @@ def login_user(email, password):
 # the frontend will automatically try to validate that
 # the user is logged in therefore the email and api_key
 # will be stored in a cookie
-def is_authenticated(email, api_key):
+def is_authenticated(email, api_key, new_api_key=True):
     admin = Admin.query.filter(Admin.email == email).first()
 
     if admin is None:
@@ -69,9 +69,12 @@ def is_authenticated(email, api_key):
     if api_key_object is None:
         return "Invalid", False
 
-    # A new api_key is generated every time the user does this
-    unregister_client(admin)
-    new_api_key = register_client(admin)
+    if new_api_key:
+        # A new api_key is generated every time the user does this
+        unregister_client(admin)
+        new_api_key = register_client(admin)
+    else:
+        new_api_key = api_key
 
     return new_api_key, True
 

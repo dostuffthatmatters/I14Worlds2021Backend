@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
+from flask_restful import Api
 
 import os
 
@@ -29,8 +30,12 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
-
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+api = Api(app)
+
+from flask_backend.resources.contact import Contact
+
+api.add_resource(Contact, "/backend/database/contact")
 
 from flask_backend import routes
