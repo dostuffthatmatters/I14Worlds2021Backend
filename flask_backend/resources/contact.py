@@ -3,7 +3,7 @@ from flask_backend.models.db_contact import DBContact
 from flask_backend.routes import get_params_dict
 from flask import request
 
-from flask_backend import api_authentication
+from flask_backend.resources import api_authentication
 from flask_backend import db
 
 

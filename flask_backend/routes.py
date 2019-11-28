@@ -1,7 +1,7 @@
 from flask_backend import app
 from flask import render_template, request, abort
 
-from flask_backend import api_authentication
+from flask_backend.resources import api_authentication
 
 import time
 
