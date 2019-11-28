@@ -35,7 +35,9 @@ bcrypt = Bcrypt(app)
 api = Api(app)
 
 from flask_backend.resources.contact import Contact
+from flask_backend.resources.article import Article
 
 api.add_resource(Contact, "/backend/database/contact")
+api.add_resource(Article, "/backend/database/article")
 
 from flask_backend import routes
