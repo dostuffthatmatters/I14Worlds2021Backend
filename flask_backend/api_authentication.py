@@ -1,5 +1,5 @@
 from flask_backend import db, bcrypt
-from flask_backend.models import Admin, AdminAPIKey
+from flask_backend.models.db_authentication import Admin, AdminAPIKey
 
 from flask_backend import BCRYPT_SALT
 

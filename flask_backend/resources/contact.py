@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask_backend.models import DBContact
+from flask_backend.models.db_contact import DBContact
 from flask_backend.routes import get_params_dict
 from flask import request
 
