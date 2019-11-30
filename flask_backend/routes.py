@@ -46,6 +46,10 @@ def get_params_dict(request):
 
         params_dict[element_list[0]] = element_list[1]
 
+    print()
+    print()
+    time.sleep(0.001)
+    print(params_dict)
     return params_dict
 
 
@@ -64,8 +68,6 @@ def index():
 @app.route("/backend/login", methods=["POST"])
 def backend_login():
     params_dict = get_params_dict(request)
-    print()
-    print(params_dict)
 
     email = params_dict["email"]
     password = params_dict["password"]
@@ -74,7 +76,7 @@ def backend_login():
     # Initial login
     if email is not None and password is not None:
         # Artificial delay to further prevent brute forcing
-        time.sleep(0.5)
+        time.sleep(0.01)
 
         login_result, login_status = api_authentication.login_user(params_dict["email"], params_dict["password"])
         params_dict["login_result"] = login_result
@@ -100,8 +102,6 @@ def backend_login():
 @app.route("/backend/logout", methods=["POST"])
 def backend_logout():
     params_dict = get_params_dict(request)
-    print()
-    print(params_dict)
 
     if "email" not in params_dict or "api_key" not in params_dict:
         return abort(400)

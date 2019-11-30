@@ -58,6 +58,7 @@ class Article(Resource):
                              "content_plain": article.content_plain,
                              "author": article.author,
                              "timestamp": datetime.timestamp(article.datetime),
+                             "visible": 1,
                              "images": [],
                              "id": article.id} for article in article_list]
 
