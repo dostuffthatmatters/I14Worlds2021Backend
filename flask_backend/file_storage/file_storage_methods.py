@@ -76,3 +76,13 @@ def upload_files(relative_path, files):
 
     return {"Status": "Ok",
             "absolute_gcloud_paths": absolute_gcloud_paths}
+
+
+def remove_files(absolute_gcloud_paths):
+
+    for path in absolute_gcloud_paths:
+        relative_bucket_path = path.replace(STORAGE_API_ENDPOINT + BUCKET_NAME + "/", "")
+
+        raw_gcloud_methods.delete_blob(BUCKET_NAME, relative_bucket_path)
+
+    return {"Status": "Ok"}

@@ -175,6 +175,17 @@ class RESTImage(Resource):
             if "image_id" not in params_dict:
                 return {"Status": "Image id missing"}, 200
 
+            image_to_remove = DBImage.query.filter(DBImage.id == params_dict["image_id"]).first()
+
+            absolute_gcloud_paths_to_remove = [
+                image_to_remove.filepath_small,
+                image_to_remove.filepath_medium,
+                image_to_remove.filepath_large,
+                image_to_remove.filepath_full,
+            ]
+
+            file_storage_methods.remove_files(absolute_gcloud_paths_to_remove)
+
             DBImage.query.filter(DBImage.id == params_dict["image_id"]).delete()
             db.session.commit()
 

@@ -38,7 +38,11 @@ else:
     SERVICE_ACCOUNT_JSON = GOOGLE_APPLICATION_CREDENTIALS
 
 # Create the actual service account json
-os.remove("service_account_keys.json")
+try:
+    os.remove("service_account_keys.json")
+except:
+    pass
+
 with open("service_account_keys.json", "a") as file:
     file.write(SERVICE_ACCOUNT_JSON)
 

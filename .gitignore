@@ -442,4 +442,4 @@ sketch
 # End of https://www.gitignore.io/api/node,react,macos,flask,python,pycharm,intellij
 /flask_backend/seed/local_seed.py
 /flask_backend/secrets.py
-/service_account_keys.json
+service_account_keys.json
