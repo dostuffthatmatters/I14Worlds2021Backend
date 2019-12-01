@@ -33,7 +33,7 @@ def html_to_plain_content(html_snippet):
         return ""
 
 
-class Article(Resource):
+class RESTArticle(Resource):
     def get(self):
         # Get a list of all articles
         params_dict = get_params_dict(request)

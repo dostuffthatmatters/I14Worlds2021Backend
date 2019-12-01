@@ -14,6 +14,9 @@ flask-cors = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 markdown = "*"
+google-cloud-storage = "*"
+pillow = "*"
+python-resize-image = "*"
 
 [requires]
 python_version = "3.8"

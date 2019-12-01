@@ -7,7 +7,7 @@ from flask_backend.resources import api_authentication
 from flask_backend import db
 
 
-class Contact(Resource):
+class RESTContact(Resource):
     def get(self):
         # Get a list of all contacts
         params_dict = get_params_dict(request)

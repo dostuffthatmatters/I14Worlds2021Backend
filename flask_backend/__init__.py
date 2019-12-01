@@ -5,6 +5,8 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_restful import Api
 
+from flask_backend.secrets import GOOGLE_APPLICATION_CREDENTIALS
+
 import os
 
 app = Flask(__name__)
@@ -27,6 +29,27 @@ if os.getenv("DATABASE_URL") is not None:
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db.sqlite3"
 
+# ---------------------------------------------------------------------------------------------------------------------
+
+# Get the content of the service account JSON
+if os.getenv("SERVICE_ACCOUNT_JSON") is not None:
+    SERVICE_ACCOUNT_JSON = os.getenv("SERVICE_ACCOUNT_JSON")
+else:
+    SERVICE_ACCOUNT_JSON = GOOGLE_APPLICATION_CREDENTIALS
+
+# Create the actual service account json
+os.remove("service_account_keys.json")
+with open("service_account_keys.json", "a") as file:
+    file.write(SERVICE_ACCOUNT_JSON)
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "service_account_keys.json"
+
+# I just wanted to pass this authentication json as a string to the google
+# library but the documentation about this is so frkn bloated that I just
+# created the json manually after passing an environment variable
+# SERVICE_ACCOUNT_JSON that does contain the json as a string
+# ---------------------------------------------------------------------------------------------------------------------
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 CORS(app)
@@ -34,10 +57,12 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 api = Api(app)
 
-from flask_backend.resources.contact import Contact
-from flask_backend.resources.article import Article
+from flask_backend.resources.rest_contact import RESTContact
+from flask_backend.resources.rest_article import RESTArticle
+from flask_backend.resources.rest_image import RESTImage
 
-api.add_resource(Contact, "/backend/database/contact")
-api.add_resource(Article, "/backend/database/article")
+api.add_resource(RESTContact, "/backend/database/contact")
+api.add_resource(RESTArticle, "/backend/database/article")
+api.add_resource(RESTImage, "/backend/database/image")
 
 from flask_backend import routes
