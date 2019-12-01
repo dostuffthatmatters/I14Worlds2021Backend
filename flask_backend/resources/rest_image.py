@@ -2,6 +2,8 @@ from datetime import datetime
 
 from flask_restful import Resource
 from flask_backend.models.db_image import DBImage
+from flask_backend.models.db_album import DBAlbum
+
 from flask_backend.routes import get_params_dict
 from flask import request
 
@@ -68,6 +70,14 @@ class RESTImage(Resource):
                 new_image.visible = int(params_dict["image_visible"])
             else:
                 new_image.visible = 0
+
+            if "image_album_id" in params_dict:
+                new_image.album_id = int(params_dict["image_album_id"])
+                album = DBAlbum.query.filter(DBAlbum.id == new_image.album_id).first()
+                if album is None:
+                    return {"Status": "Invalid album id"}, 200
+            else:
+                return {"Status": "Invalid album id is missing"}, 200
 
             # Flushing the element so that I can read its id
             db.session.add(new_image)

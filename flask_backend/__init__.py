@@ -64,9 +64,11 @@ api = Api(app)
 from flask_backend.resources.rest_contact import RESTContact
 from flask_backend.resources.rest_article import RESTArticle
 from flask_backend.resources.rest_image import RESTImage
+from flask_backend.resources.rest_album import RESTAlbum
 
 api.add_resource(RESTContact, "/backend/database/contact")
 api.add_resource(RESTArticle, "/backend/database/article")
 api.add_resource(RESTImage, "/backend/database/image")
+api.add_resource(RESTAlbum, "/backend/database/album")
 
 from flask_backend import routes

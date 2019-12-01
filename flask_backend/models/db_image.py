@@ -4,6 +4,7 @@ from flask_backend import db
 class DBImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+    album_id = db.Column(db.Integer)
     description = db.Column(db.String)
 
     filepath_small = db.Column(db.String)   #  450 x  300
