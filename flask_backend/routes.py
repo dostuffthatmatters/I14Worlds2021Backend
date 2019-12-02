@@ -6,6 +6,7 @@ from flask_backend.resources import api_authentication
 import time
 
 def get_params_dict(request):
+
     try:
         params_dict = request.get_json(force=True)
     except:
@@ -15,6 +16,7 @@ def get_params_dict(request):
         params_dict = {}
 
     params_dict.update(dict(request.form))
+    params_dict.update(dict(request.files))
 
     if "email" not in params_dict:
         params_dict["email"] = None
@@ -108,3 +110,11 @@ def backend_logout():
     else:
         api_authentication.logout_user(params_dict["email"], params_dict["api_key"])
     return "Success", 200
+
+
+@app.route("/testupload", methods=["POST"])
+def test_upload():
+    print(dict(request.form))
+    print(dict(request.files))
+
+    return "Ok", 200

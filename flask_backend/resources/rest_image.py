@@ -171,6 +171,12 @@ class RESTImage(Resource):
             if "image_visible" in params_dict:
                 image_to_modify.visible = int(params_dict["image_visible"])
 
+            if "image_album_id" in params_dict:
+                image_to_modify.album_id = int(params_dict["image_album_id"])
+                album = DBAlbum.query.filter(DBAlbum.id == image_to_modify.album_id).first()
+                if album is None:
+                    return {"Status": "Invalid album id"}, 200
+
             db.session.commit()
 
             return {"Status": "Ok"}, 200

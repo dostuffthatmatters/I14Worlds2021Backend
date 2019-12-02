@@ -9,6 +9,8 @@ from flask import request
 from flask_backend.resources import api_authentication
 from flask_backend import db
 
+import time
+
 
 class RESTAlbum(Resource):
     def get(self):
@@ -16,8 +18,10 @@ class RESTAlbum(Resource):
         params_dict = get_params_dict(request)
 
         album_list = []
+        album_id_to_index_dict = {}
 
         raw_album_list = DBAlbum.query.all()
+        index = 0
 
         for album in raw_album_list:
 
@@ -32,8 +36,8 @@ class RESTAlbum(Resource):
                 image_count = len(image_list)
                 visible_image_count = len(image_list)
 
-            if image_count == 0:
-                continue
+                if visible_image_count == 0:
+                    continue
 
             # ---------------------------------------------------------------------------------------------------------
             # Determining the albums title image
@@ -71,6 +75,7 @@ class RESTAlbum(Resource):
             # Getting the json representation of each album
 
             album_representation = {
+                "id": album.id,
                 "name": album.name,
                 "image_count": image_count,
                 "visible_image_count": visible_image_count,
@@ -78,13 +83,26 @@ class RESTAlbum(Resource):
                 "images": image_list
             }
 
+            # ---------------------------------------------------------------------------------------------------------
+            # Adding representations to result list/dict
+
             album_list.append(album_representation)
 
-        return {"albums": album_list}, 200
+            album_id_to_index_dict[str(album.id)] = index
+            index += 1
+
+            # The purpose of "album_id_to_index_dict" is to provide a fast way to look
+            # up the list_index of a given album_id. I am sure there is a better way but
+            # I haven't done anything with NoSql Databases and don't really know how to
+            # efficiently query a JSON
+
+        return {"albums": album_list,
+                "album_id_to_index": album_id_to_index_dict}, 200
 
 
     def post(self):
         # Create a new contact
+        time.sleep(1)
         params_dict = get_params_dict(request)
 
         if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
