@@ -14,6 +14,8 @@ from flask_backend.file_storage import file_storage_methods
 
 import os
 
+import time
+
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
@@ -153,6 +155,7 @@ class RESTImage(Resource):
             return {"Status": "Api key invalid"}, 200
 
     def put(self):
+        time.sleep(2)
         # Modify an existing contact
         params_dict = get_params_dict(request)
 

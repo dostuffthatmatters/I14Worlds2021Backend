@@ -71,6 +71,10 @@ class RESTAlbum(Resource):
                            "filepath_full": image.filepath_full,
                            "id": image.id} for image in image_list]
 
+            image_id_to_index_dict = {}
+            for i in range(len(image_list)):
+                image_id_to_index_dict[image_list[i]["id"]] = i
+
             # ---------------------------------------------------------------------------------------------------------
             # Getting the json representation of each album
 
@@ -80,6 +84,7 @@ class RESTAlbum(Resource):
                 "image_count": image_count,
                 "visible_image_count": visible_image_count,
                 "title_image_paths": title_image_paths,
+                "image_id_to_index_dict": image_id_to_index_dict,
                 "images": image_list
             }
 
