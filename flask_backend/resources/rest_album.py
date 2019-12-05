@@ -27,7 +27,7 @@ class RESTAlbum(Resource):
 
             # ---------------------------------------------------------------------------------------------------------
             # Determining the images in each album
-            if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+            if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
                 image_list = DBImage.query.filter(DBImage.album_id == album.id).all()
                 image_count = len(image_list)
                 visible_image_count = len(DBImage.query.filter(DBImage.album_id == album.id).filter(DBImage.visible == 1).all())
@@ -110,7 +110,7 @@ class RESTAlbum(Resource):
         time.sleep(1)
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
 
             new_album = DBAlbum()
 
@@ -137,7 +137,7 @@ class RESTAlbum(Resource):
         # Modify an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "album_id" not in params_dict:
                 return {"Status": "Album id missing"}, 200
 
@@ -159,7 +159,7 @@ class RESTAlbum(Resource):
         # Delete an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "album_id" not in params_dict:
                 return {"Status": "Album id missing"}, 200
 

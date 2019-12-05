@@ -10,6 +10,8 @@ from flask import request
 from flask_backend.resources import api_authentication
 from flask_backend import db
 
+import time
+
 
 def markdown_to_html_content(markdown_snippet):
     md = markdown.Markdown(extensions=['nl2br'])
@@ -38,37 +40,65 @@ class RESTArticle(Resource):
         # Get a list of all articles
         params_dict = get_params_dict(request)
 
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
+            article_query = DBArticle.query.all()
+        else:
+            article_query = DBArticle.query.filter(DBArticle.visible == 1).all()
+
         article_list = []
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
-            article_list = DBArticle.query.all()
-            article_list = [{"headline": article.headline,
-                             "content_markdown": article.content_markdown,
-                             "content_html": article.content_html,
-                             "content_plain": article.content_plain,
-                             "author": article.author,
-                             "timestamp": datetime.timestamp(article.datetime),
-                             "visible": article.visible,
-                             "images": [],
-                             "id": article.id} for article in article_list]
-        else:
-            article_list = DBArticle.query.filter(DBArticle.visible == 1).all()
-            article_list = [{"headline": article.headline,
-                             "content_html": article.content_html,
-                             "content_plain": article.content_plain,
-                             "author": article.author,
-                             "timestamp": datetime.timestamp(article.datetime),
-                             "visible": 1,
-                             "images": [],
-                             "id": article.id} for article in article_list]
+        for article in article_query:
+            article_representation = {}
 
-        return {"articles": article_list}, 200
+            image_list = []  # DBImage.query.filter(DBImage.album_id == album.id).all()
+
+            image_list = [{"description": image.description,
+                           "timestamp": datetime.timestamp(image.datetime),
+                           "visible": image.visible,
+                           "filepath_small": image.filepath_small,
+                           "filepath_medium": image.filepath_medium,
+                           "filepath_large": image.filepath_large,
+                           "filepath_full": image.filepath_full,
+                           "id": image.id} for image in image_list]
+
+            if len(image_list) == 0:
+                image_list.append({
+                    "description": "",
+                    "timestamp": 0,
+                    "visible": 1,
+                    "filepath_small": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-small.jpg",
+                    "filepath_medium": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-medium.jpg",
+                    "filepath_large": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-large.jpg",
+                    "filepath_full": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1.jpg",
+                    "id": 0
+                })
+
+            article_representation = {"headline": article.headline,
+                                      "content_markdown": article.content_markdown,
+                                      "content_html": article.content_html,
+                                      "content_plain": article.content_plain,
+                                      "author": article.author,
+                                      "timestamp": datetime.timestamp(article.datetime),
+                                      "visible": article.visible,
+                                      "images": image_list,
+                                      "id": article.id}
+
+            article_list.append(article_representation)
+
+        article_id_to_index = {}
+
+        for article_index in range(len(article_list)):
+            article_id_to_index[article_list[article_index]["id"]] = article_index
+
+        return {"articles": article_list,
+                "article_id_to_index": article_id_to_index}, 200
 
     def post(self):
         # Create a new article
+        time.sleep(1.5)
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
 
             new_article = DBArticle()
 
@@ -112,10 +142,11 @@ class RESTArticle(Resource):
             return {"Status": "Api key invalid"}, 200
 
     def put(self):
+        time.sleep(1.5)
         # Modify an existing article
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
 
             if "article_id" not in params_dict:
                 return {"Status": "Article id missing"}, 200
@@ -151,7 +182,7 @@ class RESTArticle(Resource):
         # Delete an existing article
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
 
             if "article_id" not in params_dict:
                 return {"Status": "Article id missing"}, 200
@@ -165,4 +196,3 @@ class RESTArticle(Resource):
             return {"Status": "Ok"}, 200
         else:
             return {"Status": "Api key invalid"}, 200
-

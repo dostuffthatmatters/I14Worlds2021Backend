@@ -33,7 +33,7 @@ class RESTImage(Resource):
         # Get a list of all contacts
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             image_list = DBImage.query.all()
         else:
             image_list = DBImage.query.filter(DBImage.visible == 1).all()
@@ -52,7 +52,7 @@ class RESTImage(Resource):
         # Create a new contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
 
             # ---------------------------------------------------------------------------------------------------------
 
@@ -159,7 +159,7 @@ class RESTImage(Resource):
         # Modify an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "image_id" not in params_dict:
                 return {"Status": "Image id missing"}, 200
 
@@ -190,7 +190,7 @@ class RESTImage(Resource):
         # Delete an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "image_id" not in params_dict:
                 return {"Status": "Image id missing"}, 200
 

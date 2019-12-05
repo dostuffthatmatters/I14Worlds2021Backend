@@ -80,23 +80,19 @@ def backend_login():
         # Artificial delay to further prevent brute forcing
         time.sleep(0.01)
 
-        login_result, login_status = api_authentication.login_user(params_dict["email"], params_dict["password"])
-        params_dict["login_result"] = login_result
-        params_dict["login_status"] = login_status
-        if login_status:
-            return login_result, 200
+        login_result_dict = api_authentication.login_user(params_dict["email"], params_dict["password"])
+        if login_result_dict["Status"] == "Ok":
+            return login_result_dict, 200
         else:
-            return login_result, 400
+            return login_result_dict, 400
 
     # App tries to automatically re-login client
     if email is not None and api_key is not None:
-        login_result, login_status = api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"])
-        params_dict["login_result"] = login_result
-        params_dict["login_status"] = login_status
-        if login_status:
-            return login_result, 200
+        login_result_dict = api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"])
+        if login_result_dict["Status"] == "Ok":
+            return login_result_dict, 200
         else:
-            return login_result, 400
+            return login_result_dict, 400
     else:
         return abort(400)
 
@@ -109,12 +105,5 @@ def backend_logout():
         return abort(400)
     else:
         api_authentication.logout_user(params_dict["email"], params_dict["api_key"])
-    return "Success", 200
+    return {"Status": "Ok"}, 200
 
-
-@app.route("/testupload", methods=["POST"])
-def test_upload():
-    print(dict(request.form))
-    print(dict(request.files))
-
-    return "Ok", 200

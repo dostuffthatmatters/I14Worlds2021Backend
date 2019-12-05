@@ -14,7 +14,7 @@ class RESTContact(Resource):
         # Get a list of all contacts
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             contact_list = DBContact.query.all()
         else:
             contact_list = DBContact.query.filter(DBContact.visible == 1).all()
@@ -31,7 +31,7 @@ class RESTContact(Resource):
         time.sleep(1)
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             new_contact = DBContact()
 
             if "contact_role" in params_dict:
@@ -66,7 +66,7 @@ class RESTContact(Resource):
         # Modify an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "contact_id" not in params_dict:
                 return {"Status": "Contact id missing"}, 200
 
@@ -94,7 +94,7 @@ class RESTContact(Resource):
         # Delete an existing contact
         params_dict = get_params_dict(request)
 
-        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)[1]:
+        if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
             if "contact_id" not in params_dict:
                 return {"Status": "Contact id missing"}, 200
 

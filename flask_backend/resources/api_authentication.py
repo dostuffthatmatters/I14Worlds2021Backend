@@ -44,12 +44,15 @@ def generate_random_key(length=32):
 
 def login_user(email, password):
     if validate_email_format(email) and len(password) >= 8:
-        user = Admin.query.filter(Admin.email == email).first()
-        if user is not None:
-            if bcrypt.check_password_hash(user.password, password + BCRYPT_SALT):
-                api_key = register_client(user)
-                return api_key, True
-    return "Invalid Email/Password", False
+        admin = Admin.query.filter(Admin.email == email).first()
+        if admin is not None:
+            if bcrypt.check_password_hash(admin.password, password + BCRYPT_SALT):
+                api_key = register_client(admin)
+                return {"Status": "Ok",
+                        "api_key": api_key,
+                        "name": f"{admin.first_name} {admin.last_name}"}
+
+    return {"Status": "Invalid Email/Password"}
 
 
 # When a client that has not force-reloads the page
@@ -60,14 +63,14 @@ def is_authenticated(email, api_key, new_api_key=False):
     admin = Admin.query.filter(Admin.email == email).first()
 
     if admin is None:
-        return "Invalid", False
+        return {"Status": "Invalid"}
 
     api_key_object = AdminAPIKey.query\
         .filter(AdminAPIKey.admin_id == admin.id)\
         .filter(AdminAPIKey.key == api_key).first()
 
     if api_key_object is None:
-        return "Invalid", False
+        return {"Status": "Invalid"}
 
     if new_api_key:
         # A new api_key is generated every time the user does this
@@ -76,7 +79,9 @@ def is_authenticated(email, api_key, new_api_key=False):
     else:
         new_api_key = api_key
 
-    return new_api_key, True
+    return {"Status": "Ok",
+            "api_key": new_api_key,
+            "name": f"{admin.first_name} {admin.last_name}"}
 
 
 def logout_user(email, api_key):
