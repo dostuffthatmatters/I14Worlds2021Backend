@@ -101,8 +101,14 @@ class RESTAlbum(Resource):
             # I haven't done anything with NoSql Databases and don't really know how to
             # efficiently query a JSON
 
+        album_id_to_name_dict = {}
+
+        for album in album_list:
+            album_id_to_name_dict[album["id"]] = album["name"]
+
         return {"albums": album_list,
-                "album_id_to_index": album_id_to_index_dict}, 200
+                "album_id_to_index": album_id_to_index_dict,
+                "album_id_to_name": album_id_to_name_dict}, 200
 
 
     def post(self):

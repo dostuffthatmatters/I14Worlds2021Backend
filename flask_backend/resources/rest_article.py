@@ -3,7 +3,8 @@ import markdown
 import re
 
 from flask_restful import Resource
-from flask_backend.models.db_article import DBArticle
+from flask_backend.models.db_article import DBArticle, DBArticleImageLink
+from flask_backend.models.db_image import DBImage
 from flask_backend.routes import get_params_dict
 from flask import request
 
@@ -50,7 +51,36 @@ class RESTArticle(Resource):
         for article in article_query:
             article_representation = {}
 
-            image_list = []  # DBImage.query.filter(DBImage.album_id == album.id).all()
+            image_list = []
+            favorite_image_id = 0
+            selected_image_ids = []
+
+            print("Favorite Links in total:")
+            print(DBArticleImageLink.query.filter(DBArticleImageLink.favorite_image == 1).all())
+
+            print("Selected Links in total:")
+            print(DBArticleImageLink.query.filter(DBArticleImageLink.favorite_image == 0).all())
+
+            favorite_image_link = DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article.id) \
+                .filter(DBArticleImageLink.favorite_image == 1).first()
+
+            if favorite_image_link is not None:
+                favorite_image = DBImage.query.filter(DBImage.id == favorite_image_link.image_id).first()
+                if favorite_image is not None:
+                    favorite_image_id = favorite_image_link.image_id
+                    image_list.append(favorite_image)
+
+            selected_images = DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article.id) \
+                .filter(DBArticleImageLink.favorite_image == 0).all()
+
+            print("selected_images")
+            print(selected_images)
+
+            for selected_image in selected_images:
+                image = DBImage.query.filter(DBImage.id == selected_image.image_id).first()
+                if image is not None:
+                    selected_image_ids.append(selected_image.image_id)
+                    image_list.append(image)
 
             image_list = [{"description": image.description,
                            "timestamp": datetime.timestamp(image.datetime),
@@ -81,6 +111,8 @@ class RESTArticle(Resource):
                                       "timestamp": datetime.timestamp(article.datetime),
                                       "visible": article.visible,
                                       "images": image_list,
+                                      "selected_image_ids": selected_image_ids,
+                                      "favorite_image_id": favorite_image_id,
                                       "id": article.id}
 
             article_list.append(article_representation)
@@ -131,15 +163,34 @@ class RESTArticle(Resource):
             else:
                 new_article.visible = 0
 
-            # Linking of images in the end
-
             db.session.add(new_article)
+            db.session.flush()
+
+            if "article_selected_image_ids" in params_dict:
+                for image_id in params_dict["article_selected_image_ids"]:
+                    image_id = int(image_id)
+                    new_link = DBArticleImageLink()
+                    new_link.image_id = image_id
+                    new_link.article_id = new_article.id
+                    new_link.favorite_image = 0
+                    db.session.add(new_link)
+
+            if "article_favorite_image_id" in params_dict:
+                favorite_image_id = int(params_dict["article_favorite_image_id"])
+                new_link = DBArticleImageLink()
+                new_link.image_id = favorite_image_id
+                new_link.article_id = new_article.id
+                new_link.favorite_image = 1
+                db.session.add(new_link)
+
             db.session.commit()
 
             return {"Status": "Ok",
                     "new_article_id": new_article.id}, 200
+
         else:
             return {"Status": "Api key invalid"}, 200
+
 
     def put(self):
         time.sleep(1.5)
@@ -170,13 +221,45 @@ class RESTArticle(Resource):
             if "article_visible" in params_dict:
                 article_to_modify.visible = int(params_dict["article_visible"])
 
-            # Linking of images in the end
+            if "article_selected_image_ids" in params_dict:
+                # Less performant but way more bug free to just
+                # reinitialize all article-image-links in case
+                # they have changed
+                print({
+                    "article_to_modify.id": article_to_modify.id,
+                })
+                DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article_to_modify.id)\
+                    .filter(DBArticleImageLink.favorite_image == False).delete()
+
+                for image_id in params_dict["article_selected_image_ids"]:
+                    image_id = int(image_id)
+                    new_link = DBArticleImageLink()
+                    new_link.image_id = image_id
+                    new_link.article_id = article_to_modify.id
+                    new_link.favorite_image = 0
+                    print(new_link)
+                    db.session.add(new_link)
+
+                print("Links in total:")
+                print(DBArticleImageLink.query.all())
+
+            if "article_favorite_image_id" in params_dict:
+                DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article_to_modify.id) \
+                    .filter(DBArticleImageLink.favorite_image).delete()
+
+                favorite_image_id = int(params_dict["article_favorite_image_id"])
+                new_link = DBArticleImageLink()
+                new_link.image_id = favorite_image_id
+                new_link.article_id = article_to_modify.id
+                new_link.favorite_image = 1
+                db.session.add(new_link)
 
             db.session.commit()
 
             return {"Status": "Ok"}, 200
         else:
             return {"Status": "Api key invalid"}, 200
+
 
     def delete(self):
         # Delete an existing article
@@ -187,9 +270,8 @@ class RESTArticle(Resource):
             if "article_id" not in params_dict:
                 return {"Status": "Article id missing"}, 200
 
+            DBArticleImageLink.query.filter(DBArticleImageLink.article_id == params_dict["article_id"]).delete()
             DBArticle.query.filter(DBArticle.id == params_dict["article_id"]).delete()
-
-            # Unlinking of images in the end
 
             db.session.commit()
 
