@@ -40,26 +40,6 @@ class RESTAlbum(Resource):
                     continue
 
             # ---------------------------------------------------------------------------------------------------------
-            # Determining the albums title image
-
-            title_image = DBImage.query.filter(DBImage.id == album.title_image_id).first()
-
-            if title_image is None:
-                title_image_paths = {
-                    "filepath_small": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-small.jpg",
-                    "filepath_medium": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-medium.jpg",
-                    "filepath_large": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1-large.jpg",
-                    "filepath_full": "https://storage.googleapis.com/i14-worlds-2021-gallery/default-images/default-image-1.jpg",
-                }
-            else:
-                title_image_paths = {
-                    "filepath_small": title_image.filepath_small,
-                    "filepath_medium": title_image.filepath_medium,
-                    "filepath_large": title_image.filepath_large,
-                    "filepath_full": title_image.filepath_full
-                }
-
-            # ---------------------------------------------------------------------------------------------------------
             # Getting the json representation of the albums images
 
             image_list = [{"description": image.description,
@@ -83,8 +63,8 @@ class RESTAlbum(Resource):
                 "name": album.name,
                 "image_count": image_count,
                 "visible_image_count": visible_image_count,
-                "title_image_paths": title_image_paths,
-                "image_id_to_index_dict": image_id_to_index_dict,
+                "title_image_id": album.title_image_id,
+                "image_id_to_index": image_id_to_index_dict,
                 "images": image_list
             }
 
