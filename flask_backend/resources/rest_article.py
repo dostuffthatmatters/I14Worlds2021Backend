@@ -229,7 +229,7 @@ class RESTArticle(Resource):
                     "article_to_modify.id": article_to_modify.id,
                 })
                 DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article_to_modify.id)\
-                    .filter(DBArticleImageLink.favorite_image == False).delete()
+                    .filter(DBArticleImageLink.favorite_image == 0).delete()
 
                 for image_id in params_dict["article_selected_image_ids"]:
                     image_id = int(image_id)
@@ -245,7 +245,7 @@ class RESTArticle(Resource):
 
             if "article_favorite_image_id" in params_dict:
                 DBArticleImageLink.query.filter(DBArticleImageLink.article_id == article_to_modify.id) \
-                    .filter(DBArticleImageLink.favorite_image).delete()
+                    .filter(DBArticleImageLink.favorite_image == 1).delete()
 
                 favorite_image_id = int(params_dict["article_favorite_image_id"])
                 new_link = DBArticleImageLink()
