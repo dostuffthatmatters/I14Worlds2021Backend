@@ -5,8 +5,6 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_restful import Api
 
-from flask_backend.secrets import GOOGLE_APPLICATION_CREDENTIALS
-
 import os
 
 app = Flask(__name__)
@@ -35,6 +33,7 @@ else:
 if os.getenv("SERVICE_ACCOUNT_JSON") is not None:
     SERVICE_ACCOUNT_JSON = os.getenv("SERVICE_ACCOUNT_JSON")
 else:
+    from flask_backend.secrets import GOOGLE_APPLICATION_CREDENTIALS
     SERVICE_ACCOUNT_JSON = GOOGLE_APPLICATION_CREDENTIALS
 
 # Create the actual service account json
@@ -42,10 +41,8 @@ try:
     os.remove("service_account_keys.json")
 except:
     pass
-
 with open("service_account_keys.json", "a") as file:
     file.write(SERVICE_ACCOUNT_JSON)
-
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "service_account_keys.json"
 
 # I just wanted to pass this authentication json as a string to the google
