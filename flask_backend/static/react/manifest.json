@@ -1,0 +1,15 @@
+{
+  "short_name": "I14 Worlds 2021",
+  "name": "International 14 World Championship 2021",
+  "icons": [
+    {
+      "src": "I14_White.ico",
+      "sizes": "240x240 120x120 60x60 30x30",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#282c34",
+  "background_color": "#ffffff"
+}

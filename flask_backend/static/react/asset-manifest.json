@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "/static/react/css/main.8f439711.chunk.css",
+    "main.js": "/static/react/js/main.26dcbde4.chunk.js",
+    "main.js.map": "/static/react/js/main.26dcbde4.chunk.js.map",
+    "runtime-main.js": "/static/react/js/runtime-main.a9ecd234.js",
+    "runtime-main.js.map": "/static/react/js/runtime-main.a9ecd234.js.map",
+    "js/2.0adfaa6c.chunk.js": "/static/react/js/2.0adfaa6c.chunk.js",
+    "js/2.0adfaa6c.chunk.js.map": "/static/react/js/2.0adfaa6c.chunk.js.map",
+    "../../templates/index.html": "/static/react/../../templates/index.html",
+    "css/main.8f439711.chunk.css.map": "/static/react/css/main.8f439711.chunk.css.map",
+    "media/AUSFlag.png": "/static/react/media/AUSFlag.00cddc0c.png",
+    "media/CANFlag.svg": "/static/react/media/CANFlag.50f3c85d.svg",
+    "media/ESA_LOGO.svg": "/static/react/media/ESA_LOGO.f8738cd1.svg",
+    "media/EURFlag.svg": "/static/react/media/EURFlag.c31a7d3c.svg",
+    "media/EventLogo.svg": "/static/react/media/EventLogo.70c2e8d3.svg",
+    "media/FSCLogo.svg": "/static/react/media/FSCLogo.8aab3e47.svg",
+    "media/I14IconSquare.svg": "/static/react/media/I14IconSquare.59a50445.svg",
+    "media/Invitation_WM2021.pdf": "/static/react/media/Invitation_WM2021.619b9924.pdf",
+    "media/JPNFlag.svg": "/static/react/media/JPNFlag.bc44cdcb.svg",
+    "media/SpaceX_Logo.svg": "/static/react/media/SpaceX_Logo.6ff54c0f.svg",
+    "media/USAFlag.svg": "/static/react/media/USAFlag.662539e7.svg",
+    "media/VRSportTVLogo.svg": "/static/react/media/VRSportTVLogo.5827dc79.svg",
+    "media/_DSC9072_2800px_cut.jpg": "/static/react/media/_DSC9072_2800px_cut.46be21e5.jpg",
+    "media/_DSC9541_Landscape.jpg": "/static/react/media/_DSC9541_Landscape.51145d14.jpg",
+    "media/_DSC9541_Portrait.jpg": "/static/react/media/_DSC9541_Portrait.f9058518.jpg",
+    "media/_DSC9541_Square.jpg": "/static/react/media/_DSC9541_Square.2762e938.jpg",
+    "media/_DSC9718_3200px_cut.jpg": "/static/react/media/_DSC9718_3200px_cut.17f8cf99.jpg",
+    "media/vr_sport_logo.svg": "/static/react/media/vr_sport_logo.46215b96.svg",
+    "precache-manifest.c899f2c4b8026814c4980cfcad16e602.js": "/static/react/precache-manifest.c899f2c4b8026814c4980cfcad16e602.js",
+    "service-worker.js": "/static/react/service-worker.js"
+  },
+  "entrypoints": [
+    "js/runtime-main.a9ecd234.js",
+    "js/2.0adfaa6c.chunk.js",
+    "css/main.8f439711.chunk.css",
+    "js/main.26dcbde4.chunk.js"
+  ]
+}
