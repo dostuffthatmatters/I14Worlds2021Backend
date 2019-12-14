@@ -29,21 +29,29 @@ else:
 
 # ---------------------------------------------------------------------------------------------------------------------
 
+print("GET THE CONTENT OF THE SERVICE ACCOUNT JSON STRING")
 # Get the content of the service account JSON
-if os.getenv("SERVICE_ACCOUNT_JSON") is not None:
-    SERVICE_ACCOUNT_JSON = os.getenv("SERVICE_ACCOUNT_JSON")
+if os.getenv("SERVICE_ACCOUNT_JSON_STRING") is not None:
+    SERVICE_ACCOUNT_JSON_STRING = os.getenv("SERVICE_ACCOUNT_JSON_STRING")
 else:
     from flask_backend.secrets import GOOGLE_APPLICATION_CREDENTIALS
-    SERVICE_ACCOUNT_JSON = GOOGLE_APPLICATION_CREDENTIALS
+    SERVICE_ACCOUNT_JSON_STRING = GOOGLE_APPLICATION_CREDENTIALS
+
+print("SERVICE_ACCOUNT_JSON_STRING")
+print(repr(SERVICE_ACCOUNT_JSON_STRING))
 
 # Create the actual service account json
 try:
     os.remove("service_account_keys.json")
+    print("REMOVED OLD \"service_account_keys.json\"")
 except:
     pass
 with open("service_account_keys.json", "a") as file:
-    file.write(SERVICE_ACCOUNT_JSON)
+    file.write(SERVICE_ACCOUNT_JSON_STRING)
+    print("CREATING NEW \"service_account_keys.json\"")
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "service_account_keys.json"
+
+print(f"DIRECTORY CONTENT: {os.listdir()}")
 
 # I just wanted to pass this authentication json as a string to the google
 # library but the documentation about this is so frkn bloated that I just
