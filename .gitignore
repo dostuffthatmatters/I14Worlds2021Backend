@@ -443,3 +443,5 @@ sketch
 /flask_backend/seed/local_seed.py
 /flask_backend/secrets.py
 service_account_keys.json
+/react_frontend
+API_Documentation.md
