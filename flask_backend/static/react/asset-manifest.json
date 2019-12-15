@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/react/css/main.a7899308.chunk.css",
-    "main.js": "/static/react/js/main.eb37694f.chunk.js",
-    "main.js.map": "/static/react/js/main.eb37694f.chunk.js.map",
+    "main.js": "/static/react/js/main.d95d0d43.chunk.js",
+    "main.js.map": "/static/react/js/main.d95d0d43.chunk.js.map",
     "runtime-main.js": "/static/react/js/runtime-main.a9ecd234.js",
     "runtime-main.js.map": "/static/react/js/runtime-main.a9ecd234.js.map",
     "js/2.ea1499a7.chunk.js": "/static/react/js/2.ea1499a7.chunk.js",
@@ -24,13 +24,13 @@
     "media/_DSC9541_Square.jpg": "/static/react/media/_DSC9541_Square.2762e938.jpg",
     "media/_DSC9718_3200px_cut.jpg": "/static/react/media/_DSC9718_3200px_cut.17f8cf99.jpg",
     "media/vr_sport_logo.svg": "/static/react/media/vr_sport_logo.46215b96.svg",
-    "precache-manifest.b9922c0145643de3ee65593f12a9faef.js": "/static/react/precache-manifest.b9922c0145643de3ee65593f12a9faef.js",
+    "precache-manifest.de16cbf0674cc917dc265c978571a169.js": "/static/react/precache-manifest.de16cbf0674cc917dc265c978571a169.js",
     "service-worker.js": "/static/react/service-worker.js"
   },
   "entrypoints": [
     "js/runtime-main.a9ecd234.js",
     "js/2.ea1499a7.chunk.js",
     "css/main.a7899308.chunk.css",
-    "js/main.eb37694f.chunk.js"
+    "js/main.d95d0d43.chunk.js"
   ]
 }
