@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_restful import Resource
 from flask_backend.models.db_image import DBImage
 from flask_backend.models.db_album import DBAlbum
+from flask_backend.models.db_article import DBArticleImageLink
 
 from flask_backend.routes import get_params_dict
 from flask import request
@@ -203,6 +204,13 @@ class RESTImage(Resource):
             file_storage_methods.remove_files(absolute_gcloud_paths_to_remove)
 
             DBImage.query.filter(DBImage.id == params_dict["image_id"]).delete()
+
+            album_to_modify = DBAlbum.query.filter(DBAlbum.title_image_id == params_dict["image_id"]).first()
+            if album_to_modify is not None:
+                album_to_modify.title_image_id = 0
+
+            DBArticleImageLink.query.filter(DBArticleImageLink.image_id == params_dict["image_id"]).delete()
+
             db.session.commit()
 
             return {"Status": "Ok"}, 200

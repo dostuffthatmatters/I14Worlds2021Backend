@@ -3,8 +3,11 @@ from datetime import datetime
 from flask_restful import Resource
 from flask_backend.models.db_album import DBAlbum
 from flask_backend.models.db_image import DBImage
+from flask_backend.models.db_article import DBArticleImageLink
 from flask_backend.routes import get_params_dict
 from flask import request
+
+from flask_backend.file_storage import file_storage_methods
 
 from flask_backend.resources import api_authentication
 from flask_backend import db
@@ -146,6 +149,22 @@ class RESTAlbum(Resource):
             if "album_id" not in params_dict:
                 return {"Status": "Album id missing"}, 200
 
+            images_to_remove = DBImage.query.filter(DBImage.album_id == params_dict["album_id"]).all()
+            absolute_gcloud_paths_to_remove = []
+
+            for image in images_to_remove:
+                DBArticleImageLink.query.filter(DBArticleImageLink.image_id == image.id).delete()
+                paths_to_remove = [
+                    image.filepath_small,
+                    image.filepath_medium,
+                    image.filepath_large,
+                    image.filepath_full,
+                ]
+                absolute_gcloud_paths_to_remove += paths_to_remove
+
+            file_storage_methods.remove_files(absolute_gcloud_paths_to_remove)
+
+            DBImage.query.filter(DBImage.album_id == params_dict["album_id"]).delete()
             DBAlbum.query.filter(DBAlbum.id == params_dict["album_id"]).delete()
             db.session.commit()
 
