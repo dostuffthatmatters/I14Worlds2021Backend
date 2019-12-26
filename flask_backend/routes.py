@@ -48,9 +48,8 @@ def get_params_dict(request):
 
         params_dict[element_list[0]] = element_list[1]
 
-    print()
-    print()
-    time.sleep(0.001)
+    print("\n\n")
+    # time.sleep(0.00001)
     print(params_dict)
     return params_dict
 
@@ -78,7 +77,7 @@ def backend_login():
     # Initial login
     if email is not None and password is not None:
         # Artificial delay to further prevent brute forcing
-        time.sleep(0.01)
+        time.sleep(0.05)
 
         login_result_dict = api_authentication.login_user(params_dict["email"], params_dict["password"])
         if login_result_dict["Status"] == "Ok":
@@ -106,4 +105,3 @@ def backend_logout():
     else:
         api_authentication.logout_user(params_dict["email"], params_dict["api_key"])
     return {"Status": "Ok"}, 200
-

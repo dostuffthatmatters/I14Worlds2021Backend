@@ -11,8 +11,6 @@ from flask import request
 from flask_backend.resources import api_authentication
 from flask_backend import db
 
-import time
-
 
 def markdown_to_html_content(markdown_snippet):
     md = markdown.Markdown(extensions=['nl2br'])
@@ -127,7 +125,6 @@ class RESTArticle(Resource):
 
     def post(self):
         # Create a new article
-        time.sleep(1.5)
         params_dict = get_params_dict(request)
 
         if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
@@ -193,7 +190,6 @@ class RESTArticle(Resource):
 
 
     def put(self):
-        time.sleep(1.5)
         # Modify an existing article
         params_dict = get_params_dict(request)
 

@@ -6,8 +6,6 @@ from flask import request
 from flask_backend.resources import api_authentication
 from flask_backend import db
 
-import time
-
 
 class RESTContact(Resource):
     def get(self):
@@ -28,7 +26,6 @@ class RESTContact(Resource):
 
     def post(self):
         # Create a new contact
-        time.sleep(1)
         params_dict = get_params_dict(request)
 
         if api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"], new_api_key=False)["Status"] == "Ok":
@@ -104,4 +101,3 @@ class RESTContact(Resource):
             return {"Status": "Ok"}, 200
         else:
             return {"Status": "Api key invalid"}, 200
-
