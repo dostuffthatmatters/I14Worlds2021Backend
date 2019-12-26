@@ -92,7 +92,7 @@ def backend_login():
         login_result_dict = api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"])
         return login_result_dict, 200
     else:
-        return abort(400)
+        return {"Status": "Missing parameter email/password/api_key"}, 200
 
 
 @app.route("/backend/logout", methods=["POST"])
@@ -100,7 +100,7 @@ def backend_logout():
     params_dict = get_params_dict(request)
 
     if "email" not in params_dict or "api_key" not in params_dict:
-        return abort(400)
+        return {"Status": "Missing parameter email/api_key"}, 200
     else:
         api_authentication.logout_user(params_dict["email"], params_dict["api_key"])
     return {"Status": "Ok"}, 200
