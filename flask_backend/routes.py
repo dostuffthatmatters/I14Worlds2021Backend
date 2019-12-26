@@ -61,6 +61,11 @@ def page_not_found(e):
     return render_template("index.html")
 
 
+@app.route("/robots.txt", methods=["GET"])
+def robots():
+    return render_template("robots.txt")
+
+
 @app.route("/backend", methods=["GET"])
 def index():
     return "<h1>Welcome to Flask!</h1>"
@@ -88,10 +93,7 @@ def backend_login():
     # App tries to automatically re-login client
     if email is not None and api_key is not None:
         login_result_dict = api_authentication.is_authenticated(params_dict["email"], params_dict["api_key"])
-        if login_result_dict["Status"] == "Ok":
-            return login_result_dict, 200
-        else:
-            return login_result_dict, 400
+        return login_result_dict, 200
     else:
         return abort(400)
 
