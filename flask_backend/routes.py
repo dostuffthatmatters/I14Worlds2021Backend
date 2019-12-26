@@ -85,10 +85,7 @@ def backend_login():
         time.sleep(0.05)
 
         login_result_dict = api_authentication.login_user(params_dict["email"], params_dict["password"])
-        if login_result_dict["Status"] == "Ok":
-            return login_result_dict, 200
-        else:
-            return login_result_dict, 400
+        return login_result_dict, 200
 
     # App tries to automatically re-login client
     if email is not None and api_key is not None:
