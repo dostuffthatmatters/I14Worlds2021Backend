@@ -1,1 +1,0 @@
-{"version":3,"sources":["AdminNewsFeedPage.scss"],"names":[],"mappings":"AACA,mBACI,iBAAkB,CADtB,8BAIQ,UAAW,CACX,WAAY","file":"11.1082c567.chunk.css","sourcesContent":["\n.AdminNewsFeedPage {\n    position: relative;\n\n    .CardImage {\n        width: auto;\n        height: 100%;\n    }\n}\n\n"]}
